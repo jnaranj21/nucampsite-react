@@ -1,11 +1,20 @@
 import { Col } from "reactstrap";
 import Partner from "../../components/Partner";
 import { selectAllPartners } from "./partnersSlice";
+import { useSelector } from "react-redux";
+import Error from "../../components/Error";
+import Loading from "../../components/Loading";
 
 const PartnersList = () => {
-  const partners = selectAllPartners();
+  const partners = useSelector(selectAllPartners);
+  const isLoading = useSelector((state) => state.partners.isLoading);
+  const errMsg = useSelector((state) => state.partners.errMsg);
 
-  return (
+  return isLoading ? (
+    <Loading />
+  ) : errMsg ? (
+    <Error errMsg={errMsg} />
+  ) : ( 
     <Col className="mt-4">
       {partners.map((partner) => {
         return (
